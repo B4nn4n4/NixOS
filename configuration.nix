@@ -80,6 +80,13 @@
    # Enable SSH agend
   programs.ssh.startAgent = true;
 
+  fonts.packages = with pkgs; [
+    nerd-fonts.fira-code
+    font-awesome
+    noto-fonts
+    noto-fonts-color-emoji
+  ];
+
  # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -87,28 +94,25 @@
 	neovim
 	fastfetch
 	git
-	kitty
+	alacritty
 	wl-clipboard
 	grim
 	slurp
+	yazi
 	# Hyprland
 	#ly
-	kdePackages.dolphin
 	hyprpaper
 	hyprlock
 	waybar
 	wofi
-	nerd-fonts.jetbrains-mono
 	microsoft-edge
 	#Tools
 	kanata
-	#Games
-	chess-tui
-	gnuchess
+	teams-for-linux
   ];
   environment.loginShellInit = ''
   	if [ "$(tty)" = "/dev/tty1" ]; then
-    	exec Hyprland
+    	exec start-hyprland
   	fi
   '';
   
