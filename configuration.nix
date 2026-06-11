@@ -90,25 +90,32 @@
  # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  	# Basics
-	neovim
-	fastfetch
-	git
+  	#Applications
 	alacritty
-	wl-clipboard
-	grim
-	slurp
+	freerdp
+	teams-for-linux
+	microsoft-edge
+	#terminal extensions
+	git
+	fastfetch
 	yazi
-	# Hyprland
-	#ly
+	neovim
+	#Scripting
+	jq
+	wl-clipboard
+	slurp
+	grim
+	wofi
+	cliphist
+	pinentry-qt
+	rofimoji
+	#Tools
 	hyprpaper
 	hyprlock
 	waybar
-	wofi
-	microsoft-edge
-	#Tools
 	kanata
-	teams-for-linux
+	#Work
+	openfortivpn
   ];
   environment.loginShellInit = ''
   	if [ "$(tty)" = "/dev/tty1" ]; then
