@@ -20,6 +20,9 @@
         identitiesOnly = true;
       };
     };
+
+  services.dunst.enable = true;
+  services.dunst.configFile = ~/.config/dunst/dunstrc;
   };
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -31,10 +34,6 @@
   #Auto USB monuting
   services.udisks2.enable = true;
   services.gvfs.enable = true;
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   #Enable Graphics
   hardware.graphics.enable = true;
@@ -114,6 +113,7 @@
 	hyprlock
 	waybar
 	kanata
+	dunst
 	#Work
 	openfortivpn
   ];
