@@ -5,9 +5,16 @@
 { config, pkgs, ... }:
   {
   imports = [
-  ./hardware-configuration.nix
-  <home-manager/nixos>
+    ./hardware-configuration.nix
+    <home-manager/nixos>
+
+    (builtins.fetchTarball {
+      url = "https://github.com/jplana/forticlient-nixos/archive/main.tar.gz";
+    })
   ];
+
+
+  home-manager.backupFileExtension = "backup";
 
   home-manager.users.adm-kalbf = {
     home.stateVersion = "25.05";
@@ -22,8 +29,16 @@
     };
 
   services.dunst.enable = true;
-  services.dunst.configFile = ~/.config/dunst/dunstrc;
+  services.dunst.configFile = "/home/adm-kalbf/.config/dunst/dunstrc";
   };
+
+  nixpkgs.config.allowUnfree = true;
+ 
+  services.gnome.gcr-ssh-agent.enable = false;
+
+  # ✅ HERE (top-level, not inside home-manager)
+  services.forticlient.enable = true;
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -73,9 +88,6 @@
     packages = with pkgs; [];
   };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
    # Enable SSH agend
   programs.ssh.startAgent = true;
 
@@ -115,7 +127,15 @@
 	kanata
 	dunst
 	#Work
-	openfortivpn
+	#FortiClient
+	#mesa
+	#libglvnd
+	#M-DE-BU-SRV-VID
+	ffmpeg-full
+  	vlc
+  	mpv
+	firefox
+
   ];
   environment.loginShellInit = ''
   	if [ "$(tty)" = "/dev/tty1" ]; then
