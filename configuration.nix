@@ -6,11 +6,6 @@
   {
   imports = [
     ./hardware-configuration.nix
-    <home-manager/nixos>
-
-    (builtins.fetchTarball {
-      url = "https://github.com/jplana/forticlient-nixos/archive/main.tar.gz";
-    })
   ];
 
   home-manager.users.adm-kalbf = import ./home.nix;
