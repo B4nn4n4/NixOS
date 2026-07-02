@@ -19,7 +19,6 @@
 
   services.dunst.enable = true;
 #  services.dunst.configFile = "/home/adm-kalbf/.config/dunst/dunstrc";
-  };
 
   nixpkgs.config.allowUnfree = true;
  
