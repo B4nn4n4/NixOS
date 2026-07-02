@@ -13,12 +13,20 @@
     })
   ];
 
-  home-manager.users.adm-kalbf = import ./home.nix;
+  home-manager.users.adm-kalbf = {
+    home.stateVersion = "25.05";
+    programs.zsh.enable = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+    programs.ssh = {
+      enable = true;
+      matchBlocks."github.com" = {
+        identityFile = "~/.ssh/github";
+        identitiesOnly = true;
+      };
+    };
 
   services.dunst.enable = true;
-#  services.dunst.configFile = "/home/adm-kalbf/.config/dunst/dunstrc";
+  services.dunst.configFile = "/home/adm-kalbf/.config/dunst/dunstrc";
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -118,6 +126,12 @@
 	#FortiClient
 	#mesa
 	#libglvnd
+	#M-DE-BU-SRV-VID
+	ffmpeg-full
+  	vlc
+  	mpv
+	firefox
+
   ];
   environment.loginShellInit = ''
   	if [ "$(tty)" = "/dev/tty1" ]; then
