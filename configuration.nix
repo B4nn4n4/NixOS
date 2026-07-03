@@ -20,6 +20,10 @@
   services.gnome.gcr-ssh-agent.enable = false;
 
   services.forticlient.enable = true;
+  
+  # Surface Studio
+  hardware.microsoft-surface.kernelVersion = "stable";
+  hardware.sensor.iio.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
