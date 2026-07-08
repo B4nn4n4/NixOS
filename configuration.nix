@@ -97,6 +97,7 @@
 	fastfetch
 	yazi
 	neovim
+	htop
 	#Scripting
 	jq
 	wl-clipboard
