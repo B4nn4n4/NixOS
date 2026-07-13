@@ -13,7 +13,14 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   services.dunst.enable = true;
-#  services.dunst.configFile = "/home/adm-kalbf/.config/dunst/dunstrc";
+
+  #Bluetooth
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
+
+  #Kanta Prequisits
+  hardware.uinput.enable = true;
+  users.groups.uinput = {};
 
   nixpkgs.config.allowUnfree = true;
  
@@ -70,7 +77,13 @@
   users.users.adm-kalbf = {
     isNormalUser = true;
     description = "adm-kalbf";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+    #Default
+    "networkmanager" "wheel"
+    #Kanata
+    "input" "uinput"
+
+    ];
     packages = with pkgs; [];
   };
 
@@ -98,6 +111,7 @@
 	yazi
 	neovim
 	htop
+	fzf
 	#Scripting
 	jq
 	wl-clipboard
@@ -113,6 +127,7 @@
 	waybar
 	kanata
 	dunst
+	blueman
 	#Work
 	#FortiClient
 	#mesa
