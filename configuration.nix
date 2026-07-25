@@ -105,6 +105,7 @@
 	freerdp
 	teams-for-linux
 	microsoft-edge
+	spotify
 	#terminal extensions
 	git
 	fastfetch
