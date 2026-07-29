@@ -14,6 +14,24 @@
 
   services.dunst.enable = true;
 
+  #Custom boot Splashscreen
+  boot.plymouth = {
+    enable = true;
+    theme = "bgrt";
+  };
+  boot.kernelParams = [
+    "quiet"
+    "splash"
+  ];
+  boot.consoleLogLevel = 0;
+
+  #Cleanup old generations
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
+
   #Bluetooth
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;

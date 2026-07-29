@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 
 {
+  imports = [
+    ./nixvim.nix
+  ];
   home.username = "adm-kalbf";
   home.homeDirectory = "/home/adm-kalbf";
 
@@ -8,8 +11,16 @@
 
   programs.zsh.enable = true;
 
+
   programs.ssh = {
-    enable = true;
+    enableDefaultConfig = false;
+
+    settings = {
+      "*" = {
+        ServerAliveInterval = 60;
+      };
+    };
+
     matchBlocks."github.com" = {
       identityFile = "~/.ssh/github";
       identitiesOnly = true;

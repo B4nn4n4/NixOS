@@ -18,8 +18,12 @@
       url = "github:jplana/forticlient-nixos";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  };
 
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
   outputs = {
     self,
     nixpkgs,
@@ -29,18 +33,21 @@
     forticlient-nixos,
     ...
   }:
-  {
+  let
+    system = "x86_64-linux";
+  in {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
+      inherit system;
 
       modules = [
-        # Overlay: use FreeRDP from older nixpkgs only
-        ({ pkgs, ... }: {
-          nixpkgs.overlays = [
-            (final: prev: {
-              freerdp = nixpkgs-freerdp.legacyPackages.${prev.system}.freerdp;
-            })
-          ];
+        ({ ... }: {
+          # Overlay disabled for testing latest FreeRDP
+          # nixpkgs.overlays = [
+          #   (final: prev: {
+          #     freerdp =
+          #       nixpkgs-freerdp.legacyPackages.${system}.freerdp;
+          #   })
+          # ];
         })
 
         ./configuration.nix
