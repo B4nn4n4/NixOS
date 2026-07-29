@@ -140,6 +140,7 @@
 	cliphist
 	pinentry-qt
 	rofimoji
+	libnotify
 	#Tools
 	hyprpaper
 	hyprlock
@@ -154,7 +155,7 @@
   ];
   environment.loginShellInit = ''
   	if [ "$(tty)" = "/dev/tty1" ]; then
-    	exec start-hyprland
+    	exec Hyprland >/dev/null 2>&1land
   	fi
   '';
   

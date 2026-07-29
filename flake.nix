@@ -24,43 +24,44 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = {
-    self,
-    nixpkgs,
-    nixpkgs-freerdp,
-    nixos-hardware,
-    home-manager,
-    forticlient-nixos,
-    ...
-  }:
-  let
-    system = "x86_64-linux";
-  in {
-    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      inherit system;
+outputs = {
+  self,
+  nixpkgs,
+  nixpkgs-freerdp,
+  nixos-hardware,
+  home-manager,
+  forticlient-nixos,
+  nixvim,
+  ...
+}:
+let
+  system = "x86_64-linux";
+in {
+  nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+    inherit system;
 
-      modules = [
-        ({ ... }: {
-          # Overlay disabled for testing latest FreeRDP
-          # nixpkgs.overlays = [
-          #   (final: prev: {
-          #     freerdp =
-          #       nixpkgs-freerdp.legacyPackages.${system}.freerdp;
-          #   })
-          # ];
-        })
+    modules = [
+      ({ ... }: {
+        # Overlay disabled for testing latest FreeRDP
+      })
 
-        ./configuration.nix
-        home-manager.nixosModules.home-manager
-        nixos-hardware.nixosModules.microsoft-surface-common
-        forticlient-nixos.nixosModules.default
+      ./configuration.nix
+      home-manager.nixosModules.home-manager
+      nixos-hardware.nixosModules.microsoft-surface-common
+      forticlient-nixos.nixosModules.default
 
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.adm-kalbf = import ./home.nix;
-        }
-      ];
-    };
+      {
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+
+        home-manager.users.adm-kalbf = {
+          imports = [
+            nixvim.homeManagerModules.nixvim
+            ./home.nix
+          ];
+        };
+      }
+    ];
   };
+};
 }
