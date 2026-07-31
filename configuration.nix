@@ -14,6 +14,13 @@
 
   services.dunst.enable = true;
 
+  #lidSwitch
+  services.logind = {
+    lidSwitch = "ignore";
+    lidSwitchDocked = "ignore";
+    lidSwitchExternalPower = "ignore";
+  };
+
   #Custom boot Splashscreen
   boot.plymouth = {
     enable = true;
