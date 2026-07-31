@@ -25,12 +25,13 @@
   ];
   boot.consoleLogLevel = 0;
 
-  #Cleanup old generations
+  #Buildgeneration Management
   nix.gc = {
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 7d";
   };
+  boot.loader.systemd-boot.configurationLimit = 10;
 
   #Bluetooth
   hardware.bluetooth.enable = true;
@@ -44,8 +45,6 @@
  
   services.gnome.gcr-ssh-agent.enable = false;
 
-  services.forticlient.enable = true;
-  
   # Surface Studio
   hardware.microsoft-surface.kernelVersion = "stable";
   hardware.sensor.iio.enable = true;
@@ -148,14 +147,51 @@
 	kanata
 	dunst
 	blueman
+	pamixer
+	pavucontrol
 	#Work
-	#FortiClient
-	#mesa
-	#libglvnd
   ];
+
+  #Forticlient
+programs.nix-ld = {
+  enable = true;
+  libraries = with pkgs; [
+    glib
+    nss
+    nspr
+    dbus
+    atk
+    cups
+    libdrm
+    gtk3
+    pango
+    cairo
+    libxkbcommon
+    alsa-lib
+    expat
+
+    libx11
+    libxcomposite
+    libxdamage
+    libxext
+    libxfixes
+    libxrandr
+    libxcb
+
+    mesa
+    libgbm
+
+    stdenv.cc.cc
+  ];
+};
+
+services.forticlient = {
+  enable = true;
+  trayAutostart = true;
+};
   environment.loginShellInit = ''
   	if [ "$(tty)" = "/dev/tty1" ]; then
-    	exec Hyprland >/dev/null 2>&1land
+    	exec start-hyprland
   	fi
   '';
   
