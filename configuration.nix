@@ -62,6 +62,8 @@
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+   # Enable SSH agend
+  programs.ssh.startAgent = true;
 
   #Auto USB monuting
   services.udisks2.enable = true;
@@ -110,9 +112,6 @@
     ];
     packages = with pkgs; [];
   };
-
-   # Enable SSH agend
-  programs.ssh.startAgent = true;
 
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
@@ -222,9 +221,6 @@ services.forticlient = {
   # };
 
   # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

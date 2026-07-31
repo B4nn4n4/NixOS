@@ -14,6 +14,7 @@
 
   programs.ssh = {
     enableDefaultConfig = false;
+    enable = true;
 
     settings = {
       "*" = {
