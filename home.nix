@@ -32,7 +32,8 @@
 
     shellAliases = {
       ll = "ls -lah";
-      rebuild = "sudo nixos-rebuild switch --flake ~/NixOS#nixos";
+      rebuild = "sudo systemctl stop forticlient.service
+      sudo nixos-rebuild switch --flake ~/NixOS#nixos";
     };
 
     sessionVariables = {
