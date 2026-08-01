@@ -129,6 +129,7 @@
 	teams-for-linux
 	microsoft-edge
 	spotify
+	opencode
 	#terminal extensions
 	git
 	fastfetch
@@ -155,7 +156,9 @@
 	blueman
 	pamixer
 	pavucontrol
-	#Work
+	#NixVim
+	ripgrep
+	fd
   ];
 
   #Forticlient
