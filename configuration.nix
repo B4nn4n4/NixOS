@@ -16,7 +16,7 @@
 
   #lidSwitch
   services.logind = {
-    lidSwitch = "ignore";
+    lidSwitch = "lock";
     lidSwitchDocked = "ignore";
     lidSwitchExternalPower = "ignore";
   };

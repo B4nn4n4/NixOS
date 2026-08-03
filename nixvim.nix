@@ -71,6 +71,26 @@
         key = "<leader>9t";
         action = "<cmd>lua require('99').tutorial()<CR>";
       }
+      {
+        mode = "v";
+        key = "<leader>9v";
+        action = "<cmd>lua require('99').visual()<CR>";
+      }
+      {
+        mode = "n";
+        key = "<leader>9x";
+        action = "<cmd>lua require('99').stop_all_requests()<CR>";
+      }
+      {
+        mode = "n";
+        key = "<leader>9l";
+        action = "<cmd>lua require('99').view_logs()<CR>";
+      }
+      {
+        mode = "n";
+        key = "<leader>9c";
+        action = "<cmd>lua require('99').clear_previous_requests()<CR>";
+      }
     ];
   };
 
