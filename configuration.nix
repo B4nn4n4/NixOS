@@ -76,7 +76,8 @@
   security.polkit.enable = true;
   virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.qemu = {
-    package = pkgs.qemu_full;
+    #package = pkgs.qemu_full;
+    package = pkgs.qemu_kvm;
     runAsRoot = true;
     swtpm.enable = true;
   };
@@ -171,8 +172,8 @@
 	#Virtualisation
 	virt-manager
 	virt-viewer
-	qemu
-	qemu_kvm
+	#qemu
+	#qemu_kvm
 	OVMF
 	#NixVim
 	ripgrep
