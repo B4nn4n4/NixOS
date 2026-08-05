@@ -26,6 +26,11 @@
       identityFile = "~/.ssh/github";
       identitiesOnly = true;
     };
+
+    matchBlocks."M-DE-BU-SRV-ADO" = {
+      identityFile = "~/.ssh/M-DE-BU-SRV-ADO";
+      identitiesOnly = true;
+    };
   };
 
   programs.bash = {

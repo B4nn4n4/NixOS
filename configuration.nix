@@ -14,6 +14,12 @@
 
   services.dunst.enable = true;
 
+  #Perfomance and Temp management
+  systemd.tmpfiles.rules = [
+    "w /sys/firmware/acpi/platform_profile - - - - balanced-performance"
+  ];
+  services.thermald.enable = true;
+
   #lidSwitch
   services.logind = {
     lidSwitch = "lock";
