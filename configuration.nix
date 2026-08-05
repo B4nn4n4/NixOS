@@ -156,6 +156,8 @@
 	neovim
 	htop
 	fzf
+	#Shells
+	powershell
 	#Scripting
 	jq
 	wl-clipboard
