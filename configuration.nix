@@ -180,8 +180,8 @@
 	#Virtualisation
 	virt-manager
 	virt-viewer
-	#qemu
-	#qemu_kvm
+	qemu
+	qemu_kvm
 	OVMF
 	#NixVim
 	ripgrep
