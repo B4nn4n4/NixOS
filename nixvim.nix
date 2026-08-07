@@ -4,6 +4,11 @@
   programs.nixvim = {
     enable = true;
 
+    globals = {
+      mapleader = "z";
+      maplocalleader = ",";
+    };
+
     colorschemes.tokyonight.enable = true;
 
     plugins = {

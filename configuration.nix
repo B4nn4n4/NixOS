@@ -8,12 +8,12 @@
     ./hardware-configuration.nix
   ];
 
-  home-manager.users.adm-kalbf = import ./home.nix;
+  home-manager.users.fabian = import ./home.nix;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   services.dunst.enable = true;
-
+  
   #Perfomance and Temp management
   systemd.tmpfiles.rules = [
     "w /sys/firmware/acpi/platform_profile - - - - balanced-performance"
@@ -59,14 +59,13 @@
   services.gnome.gcr-ssh-agent.enable = false;
 
   # Surface Studio
-  hardware.microsoft-surface.kernelVersion = "stable";
-  hardware.sensor.iio.enable = true;
+#  hardware.microsoft-surface.kernelVersion = "stable";
+#  hardware.sensor.iio.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
    # Enable SSH agend
   programs.ssh.startAgent = true;
@@ -117,9 +116,9 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.adm-kalbf = {
+  users.users.fabian = {
     isNormalUser = true;
-    description = "adm-kalbf";
+    description = "Fabian Kalb";
     extraGroups = [
     #Default
     "networkmanager" "wheel"
@@ -221,22 +220,24 @@ programs.nix-ld = {
   ];
 };
 
-services.forticlient = {
+#services.forticlient = {
+#  enable = true;
+#  trayAutostart = true;
+#};
+
+programs.hyprland = {
   enable = true;
-  trayAutostart = true;
+  withUWSM = true;
+  xwayland.enable = true;
 };
+
+
   environment.loginShellInit = ''
   	if [ "$(tty)" = "/dev/tty1" ]; then
     	exec start-hyprland
   	fi
   '';
   
-  programs.hyprland = {
-  	enable = true;
-	withUWSM = true;
-	xwayland.enable = true;
-  };
-
   programs.neovim = {
   	enable = true;
 	defaultEditor = true;

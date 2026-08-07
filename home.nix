@@ -4,14 +4,13 @@
   imports = [
     ./nixvim.nix
   ];
-  home.username = "adm-kalbf";
-  home.homeDirectory = "/home/adm-kalbf";
+  home.username = "fabian";
+  home.homeDirectory = "/home/fabian";
 
   home.stateVersion = "25.05";
 
   programs.zsh.enable = true;
-
-
+  
   programs.ssh = {
     enableDefaultConfig = false;
     enable = true;
@@ -31,6 +30,13 @@
       identityFile = "~/.ssh/M-DE-BU-SRV-ADO";
       identitiesOnly = true;
     };
+  };
+
+  programs.git = {
+    enable = true;
+
+    userName = "Fabian";
+    userEmail = "fabian@example.com";
   };
 
   programs.bash = {

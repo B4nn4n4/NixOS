@@ -2,7 +2,7 @@
 sudo rm /etc/nixos
 sudo ln -s ~/NixOS/ /etc/nixos
 
-sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release
-sudo nix-channel --update
+nixos-generate-config
+
 sudo nixos-rebuild switch
 

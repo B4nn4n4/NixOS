@@ -5,6 +5,7 @@ result-*
 
 # Ignore automatically generated direnv output
 .direnv
+
 # Ignore Tmp 99 Agend Files
 tmp
 
