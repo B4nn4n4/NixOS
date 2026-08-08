@@ -1,0 +1,138 @@
+{ config, lib, pkgs, ... }:
+
+let
+  vmName = "win11";
+
+  disk = "/var/lib/libvirt/images/win11.qcow2";
+  iso = "/var/lib/libvirt/boot/Win11.iso";
+in
+{
+  systemd.services."libvirt-${vmName}" = {
+    description = "Define ${vmName} libvirt VM";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "libvirtd.service" ];
+    wants = [ "libvirtd.service" ];
+
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+
+    script = ''
+      ${pkgs.libvirt}/bin/virsh -c qemu:///system define /run/${vmName}.xml
+    '';
+
+    preStart = ''
+      cat > /run/${vmName}.xml <<'EOF'
+      <domain type='kvm'>
+        <name>${vmName}</name>
+        <memory unit='KiB'>16777216</memory>
+        <currentMemory unit='KiB'>16777216</currentMemory>
+
+        <vcpu placement='static'>8</vcpu>
+
+        <os firmware='efi'>
+          <type arch='x86_64' machine='pc-q35-11.0'>hvm</type>
+          <firmware>
+            <feature enabled='yes' name='secure-boot'/>
+          </firmware>
+        </os>
+
+        <features>
+          <acpi/>
+          <apic/>
+          <hyperv mode='custom'>
+            <relaxed state='on'/>
+            <vapic state='on'/>
+            <spinlocks state='on' retries='8191'/>
+            <vpindex state='on'/>
+            <runtime state='on'/>
+            <synic state='on'/>
+            <stimer state='on'/>
+          </hyperv>
+        </features>
+
+        <cpu mode='host-passthrough' check='none' migratable='off'/>
+
+        <clock offset='localtime'>
+          <timer name='rtc' tickpolicy='catchup'/>
+          <timer name='pit' tickpolicy='delay'/>
+          <timer name='hpet' present='no'/>
+          <timer name='hypervclock' present='yes'/>
+        </clock>
+
+        <on_poweroff>destroy</on_poweroff>
+        <on_reboot>restart</on_reboot>
+        <on_crash>destroy</on_crash>
+
+        <devices>
+
+          <!-- Windows disk -->
+          <disk type='file' device='disk'>
+            <driver name='qemu' type='qcow2'/>
+            <source file='${disk}'/>
+            <target dev='vda' bus='virtio'/>
+          </disk>
+
+          <!-- Windows installation ISO -->
+          <disk type='file' device='cdrom'>
+            <driver name='qemu' type='raw'/>
+            <source file='${iso}'/>
+            <target dev='sda' bus='sata'/>
+            <readonly/>
+          </disk>
+
+          <!-- VirtIO network -->
+          <interface type='network'>
+            <source network='default'/>
+            <model type='virtio'/>
+          </interface>
+
+          <!-- VirtIO RNG -->
+          <rng model='virtio'>
+            <backend model='random'>/dev/urandom</backend>
+          </rng>
+
+          <!-- TPM 2.0 -->
+          <tpm model='tpm-crb'>
+            <backend type='emulator' version='2.0'/>
+          </tpm>
+
+          <!-- Console -->
+          <console type='pty'>
+            <target type='serial' port='0'/>
+          </console>
+
+          <!-- VirtIO balloon -->
+          <memballoon model='virtio'/>
+
+          <!-- NVIDIA RTX 4060 Ti -->
+          <hostdev mode='subsystem' type='pci' managed='yes'>
+            <driver name='vfio'/>
+            <source>
+              <address
+                domain='0x0000'
+                bus='0x01'
+                slot='0x00'
+                function='0x0'/>
+            </source>
+          </hostdev>
+
+          <!-- NVIDIA GPU audio -->
+          <hostdev mode='subsystem' type='pci' managed='yes'>
+            <driver name='vfio'/>
+            <source>
+              <address
+                domain='0x0000'
+                bus='0x01'
+                slot='0x00'
+                function='0x1'/>
+            </source>
+          </hostdev>
+
+        </devices>
+      </domain>
+      EOF
+    '';
+  };
+}
