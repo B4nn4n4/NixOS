@@ -3,31 +3,30 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-  {
+{
   imports = [
     ./hardware-configuration.nix
   ];
 
   home-manager.users.fabian = import ./home.nix;
 
+  # Nix configuration
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nixpkgs.config.allowUnfree = true;
 
-  services.dunst.enable = true;
-  
-  #Perfomance and Temp management
-  systemd.tmpfiles.rules = [
-    "w /sys/firmware/acpi/platform_profile - - - - balanced-performance"
-  ];
-  services.thermald.enable = true;
-
-  #lidSwitch
-  services.logind = {
-    lidSwitch = "lock";
-    lidSwitchDocked = "ignore";
-    lidSwitchExternalPower = "ignore";
+  # Build-generation management
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
   };
 
-  #Custom boot Splashscreen
+  # Boot loader
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 10;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  # Custom boot splashscreen
   boot.plymouth = {
     enable = true;
     theme = "bgrt";
@@ -38,57 +37,28 @@
   ];
   boot.consoleLogLevel = 0;
 
-  #Buildgeneration Management
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
-  };
-  boot.loader.systemd-boot.configurationLimit = 10;
-
-  #Bluetooth
-  hardware.bluetooth.enable = true;
-  services.blueman.enable = true;
-
-  #Kanta Prequisits
-  hardware.uinput.enable = true;
-  users.groups.uinput = {};
-
-  nixpkgs.config.allowUnfree = true;
- 
-  services.gnome.gcr-ssh-agent.enable = false;
-
-  # Surface Studio
-#  hardware.microsoft-surface.kernelVersion = "stable";
-#  hardware.sensor.iio.enable = true;
-
- boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-   # Enable SSH agend
-  programs.ssh.startAgent = true;
-
-  #Auto USB monuting
-  services.udisks2.enable = true;
-  services.gvfs.enable = true;
-
-  #Enable Graphics
+  # Hardware: graphics
   hardware.graphics.enable = true;
 
-  # QEMU / Virtualisation
-  security.polkit.enable = true;
-  programs.virt-manager.enable = true;
-  virtualisation.libvirtd.qemu = {
-    #package = pkgs.qemu_full;
-    package = pkgs.qemu_kvm;
-    runAsRoot = true;
-    swtpm.enable = true;
-  };
-  boot.kernelModules = [ "kvm-amd" "kvm-intel" "virtio" "virtio_pci" ];
+  # Hardware: Bluetooth
+  hardware.bluetooth.enable = true;
+
+  # Kanata prerequisites
+  hardware.uinput.enable = true;
+  users.groups.uinput = { };
+
+  # Performance and temperature management
+  systemd.tmpfiles.rules = [
+    "w /sys/firmware/acpi/platform_profile - - - - balanced-performance"
+  ];
+  services.thermald.enable = true;
 
   # Enable networking
   networking.networkmanager.enable = true;
+
+  # Auto-mount USB drives
+  services.udisks2.enable = true;
+  services.gvfs.enable = true;
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
@@ -119,15 +89,14 @@
     isNormalUser = true;
     description = "Fabian Kalb";
     extraGroups = [
-    #Default
-    "networkmanager" "wheel"
-    #Kanata
-    "input" "uinput"
-    #Virtualisation
-    "libvirtd"
-
+      # Default
+      "networkmanager" "wheel"
+      # Kanata
+      "input" "uinput"
+      # Virtualisation
+      "libvirtd"
     ];
-    packages = with pkgs; [];
+    packages = with pkgs; [ ];
   };
 
   fonts.packages = with pkgs; [
@@ -137,110 +106,144 @@
     noto-fonts-color-emoji
   ];
 
- # List packages installed in system profile. To search, run:
+  # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  	#Applications
-	alacritty
-	freerdp
-	teams-for-linux
-	microsoft-edge
-	spotify
-	opencode
-	#terminal extensions
-	git
-	fastfetch
-	yazi
-	neovim
-	htop
-	fzf
-	#Shells
-	powershell
-	#Scripting
-	jq
-	wl-clipboard
-	slurp
-	grim
-	wofi
-	cliphist
-	pinentry-qt
-	rofimoji
-	libnotify
-	#Tools
-	hyprpaper
-	hyprlock
-	waybar
-	kanata
-	dunst
-	blueman
-	pamixer
-	pavucontrol
-	#Virtualisation
-	virt-manager
-	virt-viewer
-	qemu
-	qemu_kvm
-	OVMF
-	#NixVim
-	ripgrep
-	fd
+    # Applications
+    alacritty
+    freerdp
+    teams-for-linux
+    microsoft-edge
+    spotify
+    opencode
+    # Terminal extensions
+    git
+    fastfetch
+    yazi
+    neovim
+    htop
+    fzf
+    # Shells
+    powershell
+    # Scripting
+    jq
+    wl-clipboard
+    slurp
+    grim
+    wofi
+    cliphist
+    pinentry-qt
+    rofimoji
+    libnotify
+    # Tools
+    hyprpaper
+    hyprlock
+    waybar
+    kanata
+    dunst
+    blueman
+    pamixer
+    pavucontrol
+    # Virtualisation
+    virt-manager
+    virt-viewer
+    qemu
+    qemu_kvm
+    OVMF
+    # NixVim
+    ripgrep
+    fd
   ];
 
-  #Forticlient-Gui
-programs.nix-ld = {
-  enable = true;
-  libraries = with pkgs; [
-    glib
-    nss
-    nspr
-    dbus
-    atk
-    cups
-    libdrm
-    gtk3
-    pango
-    cairo
-    libxkbcommon
-    alsa-lib
-    expat
+  # Services: notification daemon
+  services.dunst.enable = true;
 
-    libx11
-    libxcomposite
-    libxdamage
-    libxext
-    libxfixes
-    libxrandr
-    libxcb
+  # Services: Bluetooth
+  services.blueman.enable = true;
 
-    mesa
-    libgbm
-
-    stdenv.cc.cc
-  ];
-};
-
-#services.forticlient = {
-#  enable = true;
-#  trayAutostart = true;
-#};
-
-programs.hyprland = {
-  enable = true;
-  withUWSM = true;
-  xwayland.enable = true;
-};
-
-
-  environment.loginShellInit = ''
-  	if [ "$(tty)" = "/dev/tty1" ]; then
-    	exec start-hyprland
-  	fi
-  '';
-  
-  programs.neovim = {
-  	enable = true;
-	defaultEditor = true;
+  # Services: lid switch behaviour
+  services.logind = {
+    lidSwitch = "lock";
+    lidSwitchDocked = "ignore";
+    lidSwitchExternalPower = "ignore";
   };
 
-   system.stateVersion = "25.11"; # Did you read the comment?
+  services.gnome.gcr-ssh-agent.enable = false;
+
+  # SSH agent
+  programs.ssh.startAgent = true;
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+
+  # Wayland compositor
+  programs.hyprland = {
+    enable = true;
+    withUWSM = true;
+    xwayland.enable = true;
+  };
+
+  environment.loginShellInit = ''
+    if [ "$(tty)" = "/dev/tty1" ]; then
+      exec start-hyprland
+    fi
+  '';
+
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+  };
+
+  # Forticlient-GUI
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      glib
+      nss
+      nspr
+      dbus
+      atk
+      cups
+      libdrm
+      gtk3
+      pango
+      cairo
+      libxkbcommon
+      alsa-lib
+      expat
+
+      libx11
+      libxcomposite
+      libxdamage
+      libxext
+      libxfixes
+      libxrandr
+      libxcb
+
+      mesa
+      libgbm
+
+      stdenv.cc.cc
+    ];
+  };
+
+  # services.forticlient = {
+  #   enable = true;
+  #   trayAutostart = true;
+  # };
+
+  # QEMU / Virtualisation
+  security.polkit.enable = true;
+  programs.virt-manager.enable = true;
+  virtualisation.libvirtd.qemu = {
+    # package = pkgs.qemu_full;
+    package = pkgs.qemu_kvm;
+    runAsRoot = true;
+    swtpm.enable = true;
+  };
+  boot.kernelModules = [ "kvm-amd" "kvm-intel" "virtio" "virtio_pci" ];
+
+  # Surface Studio (disabled)
+  # hardware.microsoft-surface.kernelVersion = "stable";
+  # hardware.sensor.iio.enable = true;
+
+  system.stateVersion = "25.11"; # Did you read the comment?
 }

@@ -5,7 +5,7 @@
     enable = true;
 
     globals = {
-      mapleader = "z";
+      mapleader = " ";
       maplocalleader = ",";
     };
 
