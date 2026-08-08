@@ -17,6 +17,8 @@
     looking-glass-client
   ];
 
+  virtualisation.fullStack.enable = true;
+
   # PCI Passthrough
   hardware.pciPassthrough.ids = [
     "10de:2803"  # RTX 4060 Ti

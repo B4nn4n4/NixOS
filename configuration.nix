@@ -230,17 +230,6 @@
   #   trayAutostart = true;
   # };
 
-  # QEMU / Virtualisation
-  security.polkit.enable = true;
-  programs.virt-manager.enable = true;
-  virtualisation.libvirtd.enable = true;
-  virtualisation.libvirtd.qemu = {
-    # package = pkgs.qemu_full;
-    package = pkgs.qemu_kvm;
-    runAsRoot = true;
-    swtpm.enable = true;
-  };
-  boot.kernelModules = [ "kvm-amd" "kvm-intel" "virtio" "virtio_pci" ];
 
   # Surface Studio (disabled)
   # hardware.microsoft-surface.kernelVersion = "stable";

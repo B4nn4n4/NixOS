@@ -57,6 +57,7 @@
 	  ./configuration.nix
           ./AlienSpaceShip.nix
 	  ./modules/pci-passthrough.nix
+	  ./modules/virtualisation.nix
           home-manager.nixosModules.home-manager
 
           {
