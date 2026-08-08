@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./modules/pci-passthrough.nix
   ];
 
   networking.hostName = "AlienSpaceShip";
@@ -13,7 +14,15 @@
     discord
     telegram-desktop
     kdePackages.dolphin
+    looking-glass-client
   ];
+
+
+  hardware.pciPassthrough.ids = [
+    "10de:2803"  # RTX 4060 GPU
+    "10de:22bd"  # RTX 4060 audio
+  ];
+
 
   #Graphics Card
   hardware.nvidia = {

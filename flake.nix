@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    #nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11-small";
     nixpkgs-freerdp.url = "github:NixOS/nixpkgs/bd0ff2d3eac2";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
@@ -55,6 +56,7 @@
         modules = [
 	  ./configuration.nix
           ./AlienSpaceShip.nix
+	  ./modules/pci-passthrough.nix
           home-manager.nixosModules.home-manager
 
           {
