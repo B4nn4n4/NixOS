@@ -3,11 +3,12 @@
 {
   imports = [
     ./modules/pci-passthrough.nix
+    ./modules/win11-vm-nix
   ];
 
   networking.hostName = "AlienSpaceShip";
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+
 
   environment.systemPackages = with pkgs; [
     steam
@@ -17,22 +18,12 @@
     looking-glass-client
   ];
 
-
+  # PCI Passthrough
   hardware.pciPassthrough.ids = [
-    "10de:2803"  # RTX 4060 GPU
-    "10de:22bd"  # RTX 4060 audio
+    "10de:2803"  # RTX 4060 Ti
+    "10de:22bd"  # RTX 4060 Ti audio
   ];
 
-
-  #Graphics Card
-  hardware.nvidia = {
-    modesetting.enable = true;
-    open = true;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
-  };
-
-  #services.xserver.videoDrivers = [ "nvidia" ];
-
+  # Host graphics: AMD iGPU
+  services.xserver.videoDrivers = [ "amdgpu" ];
 }
-

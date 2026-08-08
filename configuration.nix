@@ -62,8 +62,7 @@
 #  hardware.microsoft-surface.kernelVersion = "stable";
 #  hardware.sensor.iio.enable = true;
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
+ boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -79,7 +78,7 @@
 
   # QEMU / Virtualisation
   security.polkit.enable = true;
-  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
   virtualisation.libvirtd.qemu = {
     #package = pkgs.qemu_full;
     package = pkgs.qemu_kvm;
