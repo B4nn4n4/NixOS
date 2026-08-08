@@ -10,7 +10,7 @@
   home.stateVersion = "25.05";
 
   programs.zsh.enable = true;
-  
+ 
   programs.ssh = {
     enableDefaultConfig = false;
     enable = true;

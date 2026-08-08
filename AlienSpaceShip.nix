@@ -4,11 +4,10 @@
   imports = [
     ./modules/pci-passthrough.nix
     ./modules/win11-vm-nix
+    ./modules/virtualisation.nix
   ];
 
   networking.hostName = "AlienSpaceShip";
-
-
 
   environment.systemPackages = with pkgs; [
     steam

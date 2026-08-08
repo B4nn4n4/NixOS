@@ -233,6 +233,7 @@
   # QEMU / Virtualisation
   security.polkit.enable = true;
   programs.virt-manager.enable = true;
+  virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.qemu = {
     # package = pkgs.qemu_full;
     package = pkgs.qemu_kvm;
